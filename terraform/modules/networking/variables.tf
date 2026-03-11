@@ -1,20 +1,16 @@
-
-variable "project_name" {
-  description = "Name of the project — used in all resource names"
+variable "resource_group_name" {
+  description = "Name of the resource group"
   type        = string
-  default     = "adp"
-}
-
-variable "environment" {
-  description = "Environment name"
-  type        = string
-  default     = "dev"
 }
 
 variable "location" {
-  description = "Azure region for all resources"
+  description = "Azure region"
   type        = string
-  default     = "eastus"
+}
+
+variable "environment" {
+  description = "Environment name (dev, staging, prod)"
+  type        = string
 }
 
 variable "hub_vnet_cidr" {
@@ -27,4 +23,10 @@ variable "spoke_vnet_cidr" {
   description = "Address space for the spoke VNet"
   type        = string
   default     = "10.1.0.0/16"
+}
+
+variable "tags" {
+  description = "Tags to apply to all resources"
+  type        = map(string)
+  default     = {}
 }
