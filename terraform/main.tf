@@ -35,6 +35,7 @@ module "security" {
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
   environment         = var.environment
+  project_name        = var.project_name
 
   web_subnet_id   = module.networking.spoke_web_subnet_id
   app_subnet_id   = module.networking.spoke_app_subnet_id

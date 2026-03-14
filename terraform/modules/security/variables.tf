@@ -44,3 +44,8 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "project_name" {
+  description = "Project name — used in Key Vault naming"
+  type        = string
+}
