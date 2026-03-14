@@ -23,3 +23,13 @@ output "key_vault_uri" {
   description = "URI of the Key Vault — used by applications to retrieve secrets"
   value       = azurerm_key_vault.main.vault_uri
 }
+
+output "managed_identity_id" {
+  description = "Resource ID of the user-assigned managed identity"
+  value       = azurerm_user_assigned_identity.main.id
+}
+
+output "managed_identity_client_id" {
+  description = "Client ID of the managed identity — used by applications to authenticate"
+  value       = azurerm_user_assigned_identity.main.client_id
+}
