@@ -1,0 +1,32 @@
+
+# Route Table — force spoke subnet traffic through Azure Firewall
+resource "azurerm_route_table" "spoke" {
+  name                          = "rt-spoke-${var.environment}"
+  location                      = var.location
+  resource_group_name           = var.resource_group_name
+  bgp_route_propagation_enabled = false
+  tags                          = var.tags
+
+  route {
+    name                   = "force-tunnel-to-firewall"
+    address_prefix         = "0.0.0.0/0"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = azurerm_firewall.hub.ip_configuration[0].private_ip_address
+  }
+}
+
+# Associate route table with spoke subnets
+resource "azurerm_subnet_route_table_association" "spoke_web" {
+  subnet_id      = azurerm_subnet.spoke_web.id
+  route_table_id = azurerm_route_table.spoke.id
+}
+
+resource "azurerm_subnet_route_table_association" "spoke_app" {
+  subnet_id      = azurerm_subnet.spoke_app.id
+  route_table_id = azurerm_route_table.spoke.id
+}
+
+resource "azurerm_subnet_route_table_association" "spoke_data" {
+  subnet_id      = azurerm_subnet.spoke_data.id
+  route_table_id = azurerm_route_table.spoke.id
+}

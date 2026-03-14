@@ -1,0 +1,80 @@
+
+# Public IP for Azure Firewall
+resource "azurerm_public_ip" "firewall" {
+  name                = "pip-firewall-${var.environment}"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+  tags                = var.tags
+}
+
+# Azure Firewall
+resource "azurerm_firewall" "hub" {
+  name                = "afw-hub-${var.environment}"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  sku_name            = "AZFW_VNet"
+  sku_tier            = "Standard"
+  tags                = var.tags
+
+  ip_configuration {
+    name                 = "firewall-ipconfig"
+    subnet_id            = azurerm_subnet.hub_firewall.id
+    public_ip_address_id = azurerm_public_ip.firewall.id
+  }
+}
+
+# Network Rule Collection — allow spoke traffic through firewall
+resource "azurerm_firewall_network_rule_collection" "spoke_rules" {
+  name                = "nrc-spoke-${var.environment}"
+  azure_firewall_name = azurerm_firewall.hub.name
+  resource_group_name = var.resource_group_name
+  priority            = 100
+  action              = "Allow"
+
+  rule {
+    name                  = "Allow-Web-To-App"
+    source_addresses      = [cidrsubnet(var.spoke_vnet_cidr, 8, 0)]
+    destination_addresses = [cidrsubnet(var.spoke_vnet_cidr, 8, 1)]
+    destination_ports     = ["8080"]
+    protocols             = ["TCP"]
+  }
+
+  rule {
+    name                  = "Allow-App-To-Data"
+    source_addresses      = [cidrsubnet(var.spoke_vnet_cidr, 8, 1)]
+    destination_addresses = [cidrsubnet(var.spoke_vnet_cidr, 8, 2)]
+    destination_ports     = ["1433"]
+    protocols             = ["TCP"]
+  }
+}
+
+# Application Rule Collection — allow outbound internet
+resource "azurerm_firewall_application_rule_collection" "outbound" {
+  name                = "arc-outbound-${var.environment}"
+  azure_firewall_name = azurerm_firewall.hub.name
+  resource_group_name = var.resource_group_name
+  priority            = 200
+  action              = "Allow"
+
+  rule {
+    name             = "Allow-Windows-Update"
+    source_addresses = ["10.0.0.0/8"]
+    target_fqdns     = ["*.windowsupdate.microsoft.com", "*.update.microsoft.com"]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+
+  rule {
+    name             = "Allow-Azure-Services"
+    source_addresses = ["10.0.0.0/8"]
+    target_fqdns     = ["*.azure.com", "*.microsoft.com", "*.core.windows.net"]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+}
