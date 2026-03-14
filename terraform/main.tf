@@ -50,3 +50,39 @@ module "security" {
     managed_by  = "terraform"
   }
 }
+
+# Storage Module
+module "storage" {
+  source = "./modules/storage"
+
+  resource_group_name           = azurerm_resource_group.main.name
+  location                      = azurerm_resource_group.main.location
+  environment                   = var.environment
+  project_name                  = var.project_name
+  managed_identity_principal_id = module.security.managed_identity_principal_id
+
+  tags = {
+    project     = var.project_name
+    environment = var.environment
+    managed_by  = "terraform"
+  }
+}
+
+# IoT Module
+module "iot" {
+  source = "./modules/iot"
+
+  resource_group_name       = azurerm_resource_group.main.name
+  location                  = azurerm_resource_group.main.location
+  environment               = var.environment
+  project_name              = var.project_name
+  managed_identity_id       = module.security.managed_identity_id
+  storage_connection_string = module.storage.storage_primary_connection_string
+  telemetry_container_name  = module.storage.telemetry_container_name
+
+  tags = {
+    project     = var.project_name
+    environment = var.environment
+    managed_by  = "terraform"
+  }
+}
