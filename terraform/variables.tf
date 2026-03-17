@@ -28,3 +28,9 @@ variable "spoke_vnet_cidr" {
   type        = string
   default     = "10.1.0.0/16"
 }
+
+variable "sql_admin_password" {
+  description = "SQL administrator password — set via TF_VAR_sql_admin_password environment variable"
+  type        = string
+  sensitive   = true
+}

@@ -86,3 +86,22 @@ module "iot" {
     managed_by  = "terraform"
   }
 }
+
+# SQL Module
+module "sql" {
+  source = "./modules/sql"
+
+  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.main.location
+  environment         = var.environment
+  project_name        = var.project_name
+  sql_admin_password  = var.sql_admin_password
+  aad_admin_username  = "petrickmccarver@outlook.com"
+  aad_admin_object_id = "7ebb1189-72b6-4256-b8ea-0a84ddd6aba0"
+
+  tags = {
+    project     = var.project_name
+    environment = var.environment
+    managed_by  = "terraform"
+  }
+}
