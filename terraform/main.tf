@@ -105,3 +105,15 @@ module "sql" {
     managed_by  = "terraform"
   }
 }
+
+module "data_factory" {
+  source              = "./modules/data-factory"
+  environment         = var.environment
+  location            = var.location
+  resource_group_name = azurerm_resource_group.main.name
+  managed_identity_id = module.security.managed_identity_id
+  tags = {
+    project     = var.project_name
+    environment = var.environment
+  }
+}
