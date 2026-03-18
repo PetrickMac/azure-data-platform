@@ -23,12 +23,12 @@ resource "azurerm_mssql_server" "main" {
 
 # SQL Database
 resource "azurerm_mssql_database" "main" {
-  name         = "sqldb-${var.project_name}-${var.environment}"
-  server_id    = azurerm_mssql_server.main.id
-  collation    = "SQL_Latin1_General_CP1_CI_AS"
-  sku_name     = "Basic"
-  max_size_gb  = 2
-  tags         = var.tags
+  name        = "sqldb-${var.project_name}-${var.environment}"
+  server_id   = azurerm_mssql_server.main.id
+  collation   = "SQL_Latin1_General_CP1_CI_AS"
+  sku_name    = "Basic"
+  max_size_gb = 2
+  tags        = var.tags
 }
 
 # Allow Azure services to connect to the SQL server

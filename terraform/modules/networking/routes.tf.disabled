@@ -1,4 +1,4 @@
-
+/*
 # Route Table — force spoke subnet traffic through Azure Firewall
 resource "azurerm_route_table" "spoke" {
   name                          = "rt-spoke-${var.environment}"

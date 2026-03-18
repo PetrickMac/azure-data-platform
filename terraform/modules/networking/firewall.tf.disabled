@@ -1,4 +1,4 @@
-
+/*
 # Public IP for Azure Firewall
 resource "azurerm_public_ip" "firewall" {
   name                = "pip-firewall-${var.environment}"
@@ -78,3 +78,4 @@ resource "azurerm_firewall_application_rule_collection" "outbound" {
     }
   }
 }
+*/

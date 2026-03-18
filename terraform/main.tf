@@ -37,9 +37,9 @@ module "security" {
   environment         = var.environment
   project_name        = var.project_name
 
-  web_subnet_id   = module.networking.spoke_web_subnet_id
-  app_subnet_id   = module.networking.spoke_app_subnet_id
-  data_subnet_id  = module.networking.spoke_data_subnet_id
+  web_subnet_id  = module.networking.spoke_web_subnet_id
+  app_subnet_id  = module.networking.spoke_app_subnet_id
+  data_subnet_id = module.networking.spoke_data_subnet_id
 
   web_subnet_cidr = cidrsubnet(var.spoke_vnet_cidr, 8, 0)
   app_subnet_cidr = cidrsubnet(var.spoke_vnet_cidr, 8, 1)
