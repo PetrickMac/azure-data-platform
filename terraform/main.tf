@@ -117,3 +117,16 @@ module "data_factory" {
     environment = var.environment
   }
 }
+
+module "monitoring" {
+  source              = "./modules/monitoring"
+  environment         = var.environment
+  location            = var.location
+  resource_group_name = azurerm_resource_group.main.name
+  key_vault_id        = module.security.key_vault_id
+  iot_hub_id          = module.iot.iothub_id
+  tags = {
+    project     = var.project_name
+    environment = var.environment
+  }
+}
