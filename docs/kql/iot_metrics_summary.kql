@@ -1,0 +1,4 @@
+AzureMetrics
+| where ResourceProvider == "MICROSOFT.DEVICES"
+| summarize avg(Average), max(Maximum) by MetricName, bin(TimeGenerated, 1h)
+| order by TimeGenerated desc

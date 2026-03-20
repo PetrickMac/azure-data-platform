@@ -1,0 +1,6 @@
+AzureDiagnostics
+| where ResourceProvider == "MICROSOFT.KEYVAULT"
+| where Category == "AuditEvent"
+| project TimeGenerated, OperationName, ResultType, CallerIPAddress, Resource
+| order by TimeGenerated desc
+| take 50
