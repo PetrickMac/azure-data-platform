@@ -28,3 +28,13 @@ variable "iot_hub_id" {
   description = "Resource ID of IoT Hub for diagnostic settings"
   type        = string
 }
+
+variable "resource_group_id" {
+  description = "Resource group ID for role assignments"
+  type        = string
+}
+
+variable "admin_object_id" {
+  description = "Object ID of the admin user for Grafana access"
+  type        = string
+}

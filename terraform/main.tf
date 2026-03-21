@@ -125,6 +125,8 @@ module "monitoring" {
   resource_group_name = azurerm_resource_group.main.name
   key_vault_id        = module.security.key_vault_id
   iot_hub_id          = module.iot.iothub_id
+  resource_group_id   = azurerm_resource_group.main.id
+  admin_object_id     = "7ebb1189-72b6-4256-b8ea-0a84ddd6aba0"
   tags = {
     project     = var.project_name
     environment = var.environment
