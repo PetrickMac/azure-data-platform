@@ -1,0 +1,8 @@
+// Key Vault failed operations - security monitoring
+// Detects unauthorized access attempts or misconfigurations
+AzureDiagnostics
+| where ResourceProvider == "MICROSOFT.KEYVAULT"
+| where ResultType != "Success"
+| project TimeGenerated, OperationName, ResultType, CallerIPAddress, Resource
+| order by TimeGenerated desc
+| take 50
