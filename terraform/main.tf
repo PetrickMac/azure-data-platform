@@ -132,3 +132,16 @@ module "monitoring" {
     environment = var.environment
   }
 }
+
+module "compute" {
+  source              = "./modules/compute"
+  environment         = var.environment
+  location            = var.location
+  resource_group_name = azurerm_resource_group.main.name
+  web_subnet_id       = module.networking.spoke_web_subnet_id
+  ssh_public_key      = file("~/.ssh/id_rsa.pub")
+  tags = {
+    project     = var.project_name
+    environment = var.environment
+  }
+}
