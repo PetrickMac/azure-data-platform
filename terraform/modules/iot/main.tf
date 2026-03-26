@@ -10,6 +10,7 @@ resource "azurerm_iothub" "main" {
   location            = var.location
   resource_group_name = var.resource_group_name
   tags                = var.tags
+  min_tls_version     = "1.2"
 
   sku {
     name     = "S1"

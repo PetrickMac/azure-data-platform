@@ -12,3 +12,13 @@ output "web_vm_name" {
   description = "Name of the web VM"
   value       = azurerm_linux_virtual_machine.web.name
 }
+
+output "acr_login_server" {
+  description = "ACR login server URL"
+  value       = azurerm_container_registry.main.login_server
+}
+
+output "acr_name" {
+  description = "ACR name"
+  value       = azurerm_container_registry.main.name
+}
