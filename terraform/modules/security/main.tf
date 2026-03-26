@@ -148,3 +148,16 @@ resource "azurerm_subnet_network_security_group_association" "data" {
   subnet_id                 = var.data_subnet_id
   network_security_group_id = azurerm_network_security_group.data.id
 }
+
+# Generate SQL admin password and store in Key Vault
+resource "random_password" "sql_admin" {
+  length           = 24
+  special          = true
+  override_special = "!@#$%"
+}
+
+resource "azurerm_key_vault_secret" "sql_password" {
+  name         = "sql-admin-password"
+  value        = random_password.sql_admin.result
+  key_vault_id = azurerm_key_vault.main.id
+}

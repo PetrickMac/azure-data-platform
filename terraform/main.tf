@@ -142,3 +142,8 @@ module "compute" {
     environment = var.environment
   }
 }
+
+module "governance" {
+  source            = "./modules/governance"
+  resource_group_id = azurerm_resource_group.main.id
+}
