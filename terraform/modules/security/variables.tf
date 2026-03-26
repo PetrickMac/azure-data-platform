@@ -49,3 +49,7 @@ variable "project_name" {
   description = "Project name — used in Key Vault naming"
   type        = string
 }
+variable "data_subnet_cidr" {
+  description = "CIDR of the data subnet for outbound NSG rules"
+  type        = string
+}

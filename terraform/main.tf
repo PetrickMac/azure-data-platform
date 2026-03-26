@@ -13,14 +13,14 @@ resource "azurerm_resource_group" "main" {
 
 # Networking Module
 module "networking" {
-  source = "./modules/networking"
-
+  source              = "./modules/networking"
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
   environment         = var.environment
   hub_vnet_cidr       = var.hub_vnet_cidr
   spoke_vnet_cidr     = var.spoke_vnet_cidr
-
+  storage_account_id  = module.storage.storage_account_id
+  sql_server_id       = module.sql.sql_server_id
   tags = {
     project     = var.project_name
     environment = var.environment
@@ -30,20 +30,17 @@ module "networking" {
 
 # Security Module
 module "security" {
-  source = "./modules/security"
-
+  source              = "./modules/security"
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
   environment         = var.environment
   project_name        = var.project_name
-
-  web_subnet_id  = module.networking.spoke_web_subnet_id
-  app_subnet_id  = module.networking.spoke_app_subnet_id
-  data_subnet_id = module.networking.spoke_data_subnet_id
-
-  web_subnet_cidr = cidrsubnet(var.spoke_vnet_cidr, 8, 0)
-  app_subnet_cidr = cidrsubnet(var.spoke_vnet_cidr, 8, 1)
-
+  web_subnet_id       = module.networking.spoke_web_subnet_id
+  app_subnet_id       = module.networking.spoke_app_subnet_id
+  data_subnet_id      = module.networking.spoke_data_subnet_id
+  web_subnet_cidr     = cidrsubnet(var.spoke_vnet_cidr, 8, 0)
+  app_subnet_cidr     = cidrsubnet(var.spoke_vnet_cidr, 8, 1)
+  data_subnet_cidr    = cidrsubnet(var.spoke_vnet_cidr, 8, 2)
   tags = {
     project     = var.project_name
     environment = var.environment

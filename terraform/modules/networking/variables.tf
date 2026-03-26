@@ -30,3 +30,13 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "storage_account_id" {
+  description = "Storage account resource ID for Private Endpoint"
+  type        = string
+}
+
+variable "sql_server_id" {
+  description = "SQL Server resource ID for Private Endpoint"
+  type        = string
+}
